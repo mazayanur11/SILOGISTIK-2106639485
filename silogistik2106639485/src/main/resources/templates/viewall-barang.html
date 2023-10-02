@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: datatable}" th:remove="tag"></object>
+  <title>View All Barang</title>
+
+</head>
+
+<body>
+  <!-- Untuk mengatur tampilan tabel -->
+  <script>
+    $(document).ready(function () {
+      $("#booksTable").DataTable({
+        dom: "Qlfrtip",
+        // Memunculkan item dengan opsi 5, 10, 20
+        lengthMenu: [5, 10, 20],
+        // Menghilangkan sortable di kolom action
+        columnDefs: [
+          {
+            targets: 5,
+            orderable: false,
+          }
+        ],
+      });
+    });
+  </script>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="text-center pt-5">
+      <h2>Daftar Barang</h2>    
+    </div>
+    <div class="container mb-4">
+      <!-- Membuat tampilan tabel buku dengan pagination -->
+      <table id="booksTable" class="display">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>SKU</th>
+            <th>Merk</th>
+            <th>Stok</th>
+            <th>Harga</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="barang, iterationStatus : ${listBarang}">
+            <td th:text="${iterationStatus.index + 1}"></td>
+            <td th:text="${barang.sku}"></td>
+            <td th:text="${barang.merk}"></td>
+            <td th:text="${barang.merk}"></td> <!-- blm bisa nampilin stok-->
+            <td th:text="'Rp' + ${barang.hargaBarang}"></td>
+            <td>
+              <!-- <a type="button" class="btn btn-md btn-primary">Detail</a> -->
+              <a type="button" class="btn btn-md btn-primary" th:href="@{/barang/{id}(id=${barang.sku})}">Detail</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

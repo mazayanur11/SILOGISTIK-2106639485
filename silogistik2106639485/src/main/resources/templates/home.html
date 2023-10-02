@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>Home</title>
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div class="container text-center">
+        <div class="row pt-5 pb-2">
+            <h1 class="fw-bold">
+                <img th:src="@{/images/logo.jpg}" heigh="175" width="175" alt="Logo" />
+                <br>
+                SILOGISTIK
+            </h1>
+        </div>
+        <div class="card-deck d-flex justify-content-center">
+
+            <div class="col">
+                <div class="card text-white bg-primary m-3" style="max-width: 18rem;">
+                    <div class="card-body">
+                        <p class="card-text">Gudang</p>
+                        <h1 class="card-title fw-bold" th:text="${jumlahGudang}"></h1>
+                        <p class="card-text">gudang</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card text-white bg-primary m-3" style="max-width: 18rem;">
+                    <div class="card-body">
+                        <p class="card-text">Barang</p>
+                        <h1 class="card-title fw-bold" th:text="${jumlahBarang}"></h1>
+                        <p class="card-text">barang</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card text-white bg-primary m-3" style="max-width: 18rem;">
+                    <div class="card-body">
+                        <p class="card-text">Permintaan pengiriman</p>
+                        <h1 class="card-title fw-bold" th:text="${jumlahPermintaanPengiriman}"></h1>
+                        <p class="card-text">permintaan pengiriman</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card text-white bg-primary m-3" style="max-width: 18rem;">
+                    <div class="card-body">
+                        <p class="card-text">Karyawan</p>
+                        <h1 class="card-title fw-bold" th:text="${jumlahKaryawan}"></h1>
+                        <p class="card-text">karyawan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

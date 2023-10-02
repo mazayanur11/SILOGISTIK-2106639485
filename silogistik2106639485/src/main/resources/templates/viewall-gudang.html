@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: datatable}" th:remove="tag"></object>
+  <title>View All Gudang</title>
+
+</head>
+
+<body>
+  <!-- Untuk mengatur tampilan tabel -->
+  <script>
+    $(document).ready(function () {
+      $("#booksTable").DataTable({
+        dom: "Qlfrtip",
+        // Memunculkan item dengan opsi 5, 10, 20
+        lengthMenu: [5, 10, 20],
+        // Menghilangkan sortable di kolom action
+        columnDefs: [
+          {
+            targets: 3,
+            orderable: false,
+          }
+        ],
+      });
+    });
+  </script>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="text-center pt-5">
+      <h2>Daftar Gudang</h2>    
+    </div>
+    <div class="container mb-4">
+      <!-- Membuat tampilan tabel buku dengan pagination -->
+      <table id="booksTable" class="display">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nama</th>
+            <th>Alamat Gudang</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="gudang, iterationStatus : ${listGudang}">
+            <td th:text="${iterationStatus.index + 1}"></td>
+            <td th:text="${gudang.nama}"></td>
+            <td th:text="${gudang.alamatGudang}"></td>
+            <td>
+              <!-- <a type="button" class="btn btn-md btn-primary" th:href="@{/}">Detail</a> -->
+              <a type="button" class="btn btn-md btn-primary" th:href="@{/gudang/{id}(id=${gudang.id})}">Detail</a>
+
+            </td>
+             
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
