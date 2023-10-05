@@ -1,12 +1,8 @@
 package apap.ti.silogistik2106639485;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-import java.math.BigInteger;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -47,22 +43,8 @@ public class Silogistik2106639485Application {
 			double randomTipe = 1 + Math.random()*4;
 			int randomTipeBarang = (int) randomTipe;
 			barangDTO.setTipeBarang(randomTipeBarang);
-			String tipe = "";
-			if (randomTipeBarang == 1) {
-				tipe = "ELEC";
-			} else if (randomTipeBarang == 2) {
-				tipe = "CLOT";
-			} else if (randomTipeBarang == 3) {
-				tipe = "FOOD";
-			} else if (randomTipeBarang == 4) {
-				tipe = "COSM";
-			} else {
-				tipe = "TOOL";
-			}
-			double temp1 = 1 + Math.random()*998;
-			int kodeTipe = (int) temp1;
-			barangDTO.setSku(tipe + String.format("%03d", kodeTipe));
-			barangDTO.setMerk(faker.company().name());
+			barangDTO.setSku(barangService.getNamaTipeBarang(randomTipeBarang) + String.format("%03d", barangService.getNextSku(randomTipeBarang)));
+			barangDTO.setMerk(faker.commerce().productName());
 			double randomHarga = 1 + Math.random()*1000000000;
 			barangDTO.setHargaBarang((long) randomHarga);
 			var barang = barangMapper.createBarangRequestDTOToBarang(barangDTO);

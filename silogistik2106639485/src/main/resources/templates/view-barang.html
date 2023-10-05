@@ -5,13 +5,22 @@
     <meta charset="UTF-8" />
     <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: datatable}" th:remove="tag"></object>
     <title>View Barang</title>
 </head>
 
 <body>
+  <script>
+    $(document).ready(function () {
+      $("#booksTable").DataTable({
+        dom: "Qlfrtip",
+        lengthMenu: [5, 10, 20], 
+      });
+    });
+  </script>
     <nav th:replace="~{fragments/navbar :: navbar}"></nav>
     <div class="container">
-        <div class="row justify-content-center mt-5">
+        <div class="row justify-content-center mt-5 mb-5">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h2 class="fw-bold">Detail Barang</h2>
@@ -47,7 +56,7 @@
                       Total Stok
                     </div>
                     <div class="col-8">
-                      <h6 class="card-title" th:text="': ' + ${barangDTO.sku}"></h6>
+                      <h6 class="card-title" th:text="': ' + ${totalStok}"></h6>
                     </div>
                   </div>
                   <div class="row">
@@ -75,7 +84,7 @@
                       <tbody>
                         <tr th:each="gudangBarang, iterationStatus : ${barangDTO.listGudangBarang}">
                           <td th:text="${iterationStatus.index + 1}"></td>
-                          <td><a th:href="@{/gudang/viewall}" th:text="${gudangBarang.Gudang.nama}"></a></td>
+                          <td><a th:href="@{/gudang/{id}(id=${gudangBarang.Gudang.id})}" th:text="${gudangBarang.Gudang.nama}"></a></td>
                           <td th:text="${gudangBarang.Gudang.alamatGudang}"></td>
                           <td th:text="${gudangBarang.stok}"></td>
                         </tr>
@@ -84,7 +93,7 @@
                   </div>
                 </div>
                   <div class="d-flex justify-content-center">
-                    <a th:href="@{/gudang/viewall}" type="button" class="btn btn-secondary btn-md justify-content-center mb-3">Kembali</a>
+                    <a th:href="@{/barang/viewall}" type="button" class="btn btn-secondary btn-md justify-content-center mb-3">Kembali</a>
                   
                   </div>
               </div>

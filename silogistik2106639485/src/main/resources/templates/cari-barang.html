@@ -6,7 +6,7 @@
   <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
   <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
   <object th:include="~{fragments/common :: datatable}" th:remove="tag"></object>
-  <title>View All Barang</title>
+  <title>Cari Barang</title>
 
 </head>
 
@@ -18,46 +18,38 @@
         dom: "Qlfrtip",
         // Memunculkan item dengan opsi 5, 10, 20
         lengthMenu: [5, 10, 20],
-        // Menghilangkan sortable di kolom action
-        columnDefs: [
-          {
-            targets: 5,
-            orderable: false,
-          }
-        ],
       });
     });
   </script>
   <nav th:replace="~{fragments/navbar :: navbar}"></nav>
   <div class="container">
     <div class="text-center pt-5">
-      <h2>Daftar Barang</h2> 
-      <a type="button" class="btn btn-primary m-2" th:href="@{/barang/tambah}">Tambah Barang</a>   
+      <h2>Cari Barang</h2>    
     </div>
     <div class="container mb-4">
+        <form class="d-flex m-5 gap-3" th:action="@{/gudang/cari-barang}" method="get">
+            <select class="form-control" name="sku" id="sku">
+                <option th:each="barang: ${listBarang}"
+                    th:value="${barang.sku}" th:text="${barang.merk}"></option>
+            </select>
+            <button class="btn btn-md btn-primary" type="submit">Cari</button>
+        </form>  
       <!-- Membuat tampilan tabel buku dengan pagination -->
       <table id="booksTable" class="display">
         <thead>
           <tr>
             <th>#</th>
-            <th>SKU</th>
-            <th>Merk</th>
+            <th>Nama</th>
+            <th>Alamat</th>
             <th>Stok</th>
-            <th>Harga</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr th:each="barang, iterationStatus : ${stokBarang}">
+          <tr th:each="gudangBarang, iterationStatus : ${listGudangBarang}">
             <td th:text="${iterationStatus.index + 1}"></td>
-            <td th:text="${barang.key.sku}"></td>
-            <td th:text="${barang.key.merk}"></td>
-            <td th:text="${barang.value}"></td> <!-- blm bisa nampilin stok-->
-            <td th:text="'Rp' + ${barang.key.hargaBarang}"></td>
-            <td>
-              <!-- <a type="button" class="btn btn-md btn-primary">Detail</a> -->
-              <a type="button" class="btn btn-md btn-primary" th:href="@{/barang/{id}(id=${barang.key.sku})}">Detail</a>
-            </td>
+            <td><a th:href="@{/gudang/{id}(id=${gudangBarang.Gudang.id})}" th:text="${gudangBarang.Gudang.nama}"></a></td>
+            <td th:text="${gudangBarang.Gudang.alamatGudang}"></td>
+            <td th:text="${gudangBarang.stok}"></td> 
           </tr>
         </tbody>
       </table>

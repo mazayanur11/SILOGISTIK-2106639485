@@ -10,4 +10,6 @@ public interface GudangService {
     List<Gudang> getAllGudang();
 
     Gudang getGudangById(Long id);
+
+    void restockBarang(Gudang gudang);
 }

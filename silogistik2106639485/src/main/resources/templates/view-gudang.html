@@ -5,17 +5,30 @@
     <meta charset="UTF-8" />
     <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: datatable}" th:remove="tag"></object>
     <title>View Gudang</title>
 </head>
 
 <body>
+  <script>
+    $(document).ready(function () {
+      $("#booksTable").DataTable({
+        dom: "Qlfrtip",
+        // Memunculkan item dengan opsi 5, 10, 20
+        lengthMenu: [5, 10, 20],
+        // Menghilangkan sortable di kolom action
+        
+        
+      });
+    });
+  </script>
     <nav th:replace="~{fragments/navbar :: navbar}"></nav>
     <div class="container">
-        <div class="row justify-content-center mt-5">
+        <div class="row justify-content-center mt-5 mb-5">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h2 class="fw-bold">Detail Gudang</h2>
-                  <button class="btn btn-primary btn-md m-2">+ Restock Barang</button>
+                  <a th:href="@{/gudang/{id}/restock-barang(id=${gudangDTO.id})}" type="button" class="btn btn-primary btn-md m-2">+ Restock Barang</a>
                 </div>
                 <div class="card-body">
                   <div class="row">
@@ -39,7 +52,7 @@
                 <h1></h1>
                 <div class="row justify-content-center">
                   <div class="col-12">
-                    <h5 class="fw-bold">Daftar Barang</h5>
+                    <h5 class="fw-bold">Daftar barang tersedia</h5>
                     <table id="booksTable" class="table table-striped table-bordered" style="width: 100%">
                       <thead class="">
                         <tr>
