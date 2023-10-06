@@ -13,6 +13,7 @@ import apap.ti.silogistik2106639485.model.Gudang;
 import apap.ti.silogistik2106639485.model.GudangBarang;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
@@ -62,7 +64,7 @@ public class GudangController {
         return "home";
     }
 
-    @GetMapping("gudang/viewall")
+    @GetMapping("gudang")
     public String listGudang(Model model) {
         //Mendapatkan semua gudang
         List<Gudang> listGudang = gudangService.getAllGudang();
@@ -72,8 +74,8 @@ public class GudangController {
         return "viewall-gudang";
     }
 
-    @GetMapping(value = "/gudang/{id}")
-    public String detailGudang(@PathVariable(value = "id") Long id, Model model) {
+    @GetMapping(value = "/gudang/{idGudang}")
+    public String detailGudang(@PathVariable(value = "idGudang") Long id, Model model) {
         // Mendapatkan buku melalui kodeBuku
         Gudang gudang = gudangService.getGudangById(id);
         ReadGudangResponseDTO gudangDTO = gudangMapper.gudangToReadGudangResponseDTO(gudang);
@@ -97,8 +99,8 @@ public class GudangController {
         return "cari-barang";
     }
 
-    @GetMapping(value = "/gudang/{id}/restock-barang")
-    public String formRestockBarang(@PathVariable(value = "id") Long id, Model model) {
+    @GetMapping(value = "/gudang/{idGudang}/restock-barang")
+    public String formRestockBarang(@PathVariable(value = "idGudang") Long id, Model model) {
         Gudang gudang = gudangService.getGudangById(id);
         var gudangDTO = gudangMapper.gudangToUpdateGudangRequestDTO(gudang);
 
@@ -109,26 +111,31 @@ public class GudangController {
         return "form-restock-barang";
     }
 
-    @PostMapping("gudang/{id}/restock-barang")
-    public RedirectView restockBarang(@Valid @ModelAttribute UpdateGudangRequestDTO gudangDTO, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            StringBuilder errorMessage = new StringBuilder();
+    @PostMapping("gudang/{idGudang}/restock-barang")
+    public RedirectView restockBarang(@Valid @ModelAttribute UpdateGudangRequestDTO gudangDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        // if (bindingResult.hasErrors()) {
+        //     StringBuilder errorMessage = new StringBuilder();
 
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                String defaultMessage = error.getDefaultMessage();
-                errorMessage.append(defaultMessage).append("<br>");
-            }
+        //     for (FieldError error : bindingResult.getFieldErrors()) {
+        //         String defaultMessage = error.getDefaultMessage();
+        //         errorMessage.append(defaultMessage).append("<br>");
+        //     }
 
-            model.addAttribute("errorMessage", errorMessage);
-            model.addAttribute("gudangDTO", gudangDTO);
+        //     model.addAttribute("gudangDTO", gudangDTO);
+        //     redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+        //     return new RedirectView("/gudang/restock-barang");
+        // }
 
-            return new RedirectView("/gudang/restock-barang");
+        try {
+            Gudang gudang = gudangMapper.updateGudangRequestDTOToGudang(gudangDTO);
+            gudangService.restockBarang(gudang);
+            model.addAttribute("id", gudang.getId());
+            return new RedirectView("/gudang/" + gudangDTO.getId());
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Barang sudah terdaftar di gudang");
+            return new RedirectView("/gudang/" + gudangDTO.getId() + "/restock-barang");
         }
 
-        Gudang gudang = gudangMapper.updateGudangRequestDTOToGudang(gudangDTO);
-        gudangService.restockBarang(gudang);
-        model.addAttribute("id", gudang.getId());
-        return new RedirectView("/gudang/" + gudangDTO.getId());
     }
 
     @PostMapping(value = "gudang/{id}/restock-barang", params = {"addRow"})

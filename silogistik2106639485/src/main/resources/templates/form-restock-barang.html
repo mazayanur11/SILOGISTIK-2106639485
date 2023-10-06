@@ -36,7 +36,7 @@
                   </div>
                 </div>
                 <h1></h1>
-                <p th:utext="${errorMessage}"></p>
+                <p style="color: red;" th:utext="${errorMessage}"></p>
                 <form th:action="@{/gudang/{id}/restock-barang(id=${gudangDTO.id})}" th:object="${gudangDTO}" method="POST">
                   <div class="d-flex justify-content-end">
                     <button class="btn btn-primary" type="submit" name="addRow" style="text-align:right">+ Tambah Barang</button>

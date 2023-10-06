@@ -19,4 +19,12 @@ public interface BarangService {
     String getNamaTipeBarang(int tipeBarang);
 
     Dictionary<Barang, Integer> getStokBarang(List<Barang> listBarang);
+
+    boolean isMerkExist(String merk);
+
+    boolean isMerkExist(String merk, String sku);
+
+    Barang updateBarang(Barang barangFromDTO);
+
+    String getStringTipeBarang(int tipeBarang);
 }

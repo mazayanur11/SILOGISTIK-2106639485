@@ -34,7 +34,6 @@
       <h2>Daftar Gudang</h2>    
     </div>
     <div class="container mb-4">
-      <!-- Membuat tampilan tabel buku dengan pagination -->
       <table id="booksTable" class="display">
         <thead>
           <tr>
@@ -50,11 +49,8 @@
             <td th:text="${gudang.nama}"></td>
             <td th:text="${gudang.alamatGudang}"></td>
             <td>
-              <!-- <a type="button" class="btn btn-md btn-primary" th:href="@{/}">Detail</a> -->
-              <a type="button" class="btn btn-md btn-primary" th:href="@{/gudang/{id}(id=${gudang.id})}">Detail</a>
-
+              <a type="button" class="btn btn-md btn-secondary" th:href="@{/gudang/{id}(id=${gudang.id})}">Detail</a>
             </td>
-             
           </tr>
         </tbody>
       </table>

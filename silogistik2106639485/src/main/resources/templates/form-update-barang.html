@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
-    <title>Tambah Barang</title>
+    <title>Ubah Barang</title>
 </head>
 
 <body>
@@ -14,11 +14,18 @@
         <div class="row justify-content-center mt-5 mb-5">
           <div class="card">
             <div class="card-header justify-content-center align-items-center">
-              <center><h2 class="fw-bold">Tambah Barang</h2></center>
+              <center><h2 class="fw-bold">Ubah Barang</h2></center>
             </div>
             <div class="card-body">
               <p style="color: red;" th:utext="${errorMessage}"></p>
-                <form th:action="@{/barang/tambah}" th:object="${barangDTO}" method="POST">
+                <form th:action="@{'/barang/' + ${barangDTO.sku} + '/ubah'}" th:object="${barangDTO}" method="POST">
+                  <div class="row">
+                    <div class="col">
+                      SKU : <br>
+                      <input class="form-control" readonly type="text" th:field="*{sku}" />
+                    </div>
+                  </div>
+                  <br>
                   <div class="row">
                     <div class="col">
                       Merk Barang : <br>
@@ -32,13 +39,7 @@
                       <table class="table">
                         <tbody>
                             <tr>
-                                <select class="form-control" name="tipeBarang" id="tipeBarang" th:field="*{tipeBarang}">
-                                    <option th:value="1">Produk Elektronik</option>
-                                    <option th:value="2">Pakaian & Aksesoris</option>
-                                    <option th:value="3">Makanan & Minuman</option>
-                                    <option th:value="4">Kosmetik</option>
-                                    <option th:value="5">Perlengkapan Rumah</option>
-                                </select>
+                              <input class="form-control" readonly type="text" th:field="*{namaTipeBarang}" />
                             </tr>
                         </tbody>
                     </table>
@@ -52,7 +53,7 @@
                   </div>
             </div>
             <div class="d-flex justify-content-center gap-3">
-                <a th:href="@{/barang}" type="button" class="btn btn-danger btn-md justify-content-center mb-3">Batal</a>
+                <a th:href="@{/barang/{id}(id=${barangDTO.sku})}" type="button" class="btn btn-danger btn-md justify-content-center mb-3">Batal</a>
                 <button class="btn btn-primary btn-md justify-content-center mb-3" type="submit">Simpan</button>
               </div>
           </form>

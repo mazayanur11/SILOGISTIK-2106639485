@@ -80,4 +80,43 @@ public class BarangServiceImpl implements BarangService {
 
         return stokBarang;
     }
+
+    @Override
+    public boolean isMerkExist(String merk) {
+        return getAllBarang().stream().anyMatch(b -> b.getMerk().equals(merk));
+    }
+
+    @Override
+    public boolean isMerkExist(String merk, String sku) {
+        return getAllBarang().stream().anyMatch(b -> b.getMerk().equals(merk) && !b.getSku().equals(sku));
+    }
+
+    @Override
+    public Barang updateBarang(Barang barangFromDTO) {
+        Barang barang = getBarangById(barangFromDTO.getSku());
+
+        if (barang != null) {
+            barang.setTipeBarang(barangFromDTO.getTipeBarang());
+            barang.setMerk(barangFromDTO.getMerk());
+            barang.setHargaBarang(barangFromDTO.getHargaBarang());
+            barangDb.save(barang);
+        }
+
+        return barang;
+    }
+
+    @Override
+    public String getStringTipeBarang(int tipeBarang) {
+        if (tipeBarang == 1) {
+            return "Produk Elektronik";
+        } else if (tipeBarang == 2) {
+            return "Pakaian & Aksesoris";
+        } else if (tipeBarang == 3) {
+            return "Makanan & Minuman";
+        } else if (tipeBarang == 4) {
+            return "Kosmetik";
+        } else {
+            return "Perlengkapan Rumah";
+        }
+    }
 }
