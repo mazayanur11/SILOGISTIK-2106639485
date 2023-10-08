@@ -14,30 +14,28 @@
             data-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup"
             aria-expanded="false"
-            aria-label="Toggle navigation"
-        >
+            aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Gudang
-            </a>
-            <ul class="dropdown-menu dropdown-menu-light">
-              <li><a class="dropdown-item" id="gudang-link" th:href="@{/gudang}">Daftar Gudang</a></li>
-              <li><a class="dropdown-item" id="cari-barang-link" th:href="@{/gudang/cari-barang}">Cari Barang</a></li>
-              <!-- <li><a class="dropdown-item" th:each="gudang: ${listGudang}" th:value="${gudang.id}" th:text="${gudang.nama}"></a></li> -->
-            </ul>
-          </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" id="barang-link" th:href="@{/barang}">Barang</a>
+                    <a class="nav-link dropdown-toggle" th:classappend="${page == 'gudang'} ? 'active' : ''" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Gudang
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-light">
+                        <li><a class="dropdown-item" id="gudang-link" th:href="@{/gudang}">Daftar Gudang</a></li>
+                        <li><a class="dropdown-item" id="cari-barang-link" th:href="@{/gudang/cari-barang}">Cari Barang</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" id="pengiriman-link" th:href="@{/}">Permintaan Pengiriman</a>
+                    <a class="nav-link" id="barang-link" th:classappend="${page == 'barang'} ? 'active' : ''" th:href="@{/barang}">Barang</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" id="bonus-link" th:href="@{/}">Bonus</a>
+                    <a class="nav-link" id="pengiriman-link" th:classappend="${page == 'permintaan-pengiriman'} ? 'active' : ''" th:href="@{/permintaan-pengiriman}">Permintaan Pengiriman</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="bonus-link" th:classappend="${page == 'bonus'} ? 'active' : ''" th:href="@{/}">Bonus</a>
                 </li>
             </ul>
         </div>

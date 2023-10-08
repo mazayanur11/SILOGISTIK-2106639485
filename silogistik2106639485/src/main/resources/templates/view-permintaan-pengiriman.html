@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: datatable}" th:remove="tag"></object>
+  <title>View Permintaan Pengiriman</title>
+</head>
+
+<body>
+  <script>
+    $(document).ready(function () {
+      $("#booksTable").DataTable({
+        dom: "Qlfrtip",
+        lengthMenu: [5, 10, 20], 
+      });
+    });
+  </script>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="row justify-content-center mt-5 mb-5">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2 class="fw-bold">Detail Permintaan Pengiriman</h2>
+          <a th:href="@{/permintaan-pengiriman}" type="button" class="btn btn-danger btn-md m-2">Cancel Permintaan</a>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              No. Permintaan Pengiriman
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': ' + ${permintaanPengirimanDTO.nomorPengiriman}"></h6>
+            </div>
+          </div>
+          <h1></h1>
+          <div class="row">
+            <div class="col">
+              Waktu Permintaan
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': ' + ${waktuPermintaan}"></h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              Karyawan Bertugas
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': ' + ${permintaanPengirimanDTO.Karyawan.nama}"></h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              Waktu Pengiriman
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': ' + ${tanggalPengiriman}"></h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              Nama Penerima
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': ' + ${permintaanPengirimanDTO.namaPenerima}"></h6>
+            </div>
+          </div>
+          <h1></h1>
+          <div class="row">
+            <div class="col">
+              Alamat Penerima
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': ' + ${permintaanPengirimanDTO.alamatPenerima}"></h6>
+            </div>
+          </div>
+          <h1></h1>
+          <div class="row">
+            <div class="col">
+              Jenis Layanan
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': ' + ${jenisLayanan}"></h6>
+            </div>
+          </div>
+          <h1></h1>
+          <div class="row">
+            <div class="col">
+              Biaya Pengiriman
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': Rp' + ${permintaanPengirimanDTO.biayaPengiriman}"></h6>
+            </div>
+          </div>
+          <h1></h1>
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <h5 class="fw-bold">Daftar barang dipesan</h5>
+              <table id="booksTable" class="table table-striped table-bordered" style="width: 100%">
+                <thead class="">
+                  <tr>
+                    <th>#</th>
+                    <th>SKU</th>
+                    <th>Merk</th>
+                    <th>Kuantitas Pesanan</th>
+                    <th>Total Harga</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="permintaanPengirimanBarang, iterationStatus : ${permintaanPengirimanDTO.listPermintaanPengirimanBarang}">
+                    <td th:text="${iterationStatus.index + 1}"></td>
+                    <td><a th:href="@{/barang/{id}(id=${permintaanPengirimanBarang.Barang.sku})}" th:text="${permintaanPengirimanBarang.Barang.sku}"></a></td>
+                    <td th:text="${permintaanPengirimanBarang.Barang.merk}"></td>
+                    <td th:text="${permintaanPengirimanBarang.kuantitasPengiriman}"></td>
+                    <td th:text="${totalHargaBarang[permintaanPengirimanBarang.Barang]}"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <a th:href="@{/permintaan-pengiriman}" type="button" class="btn btn-secondary btn-md justify-content-center mb-3">Kembali</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

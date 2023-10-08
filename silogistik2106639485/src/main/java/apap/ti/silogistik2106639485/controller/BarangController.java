@@ -43,12 +43,12 @@ public class BarangController {
         //Add variabel semua bukuModel ke "ListBuku" untuk dirender pada thymeleaf
         model.addAttribute("listBarang", listBarang);
         model.addAttribute("stokBarang", barangService.getStokBarang(listBarang));
+        model.addAttribute("page", "barang");
         return "viewall-barang";
     }
 
     @GetMapping(value = "/barang/{idBarang}")
     public String detailBarang(@PathVariable(value = "idBarang") String sku, Model model) {
-        // Mendapatkan buku melalui kodeBuku
         Barang barang = barangService.getBarangById(sku);
         List<GudangBarang> listGudangBarang = gudangBarangService.getStokOfBarang(barang);
         int totalStok = 0;
@@ -61,7 +61,7 @@ public class BarangController {
 
         model.addAttribute("barangDTO", barangDTO);
         model.addAttribute("totalStok", totalStok);
-
+        model.addAttribute("page", "barang");
         return "view-barang";
     }
 
@@ -70,6 +70,7 @@ public class BarangController {
         var barangDTO = new CreateBarangRequestDTO();
 
         model.addAttribute("barangDTO", barangDTO);
+        model.addAttribute("page", "barang");
         return "form-add-barang";
     }
 
@@ -86,6 +87,7 @@ public class BarangController {
             }
 
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+            redirectAttributes.addFlashAttribute("page", "barang");
             return new RedirectView("/barang/tambah");
         }
         
@@ -93,6 +95,7 @@ public class BarangController {
             var errorMessage = "Maaf, merk barang sudah ada";
 
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+            redirectAttributes.addFlashAttribute("page", "barang");
             return new RedirectView("/barang/tambah");
         }
 
@@ -102,6 +105,7 @@ public class BarangController {
         barang.setSku(namaTipeBarang + String.format("%03d", noSKU));
         barangService.saveBarang(barang);
 
+        redirectAttributes.addFlashAttribute("page", "barang");
         return new RedirectView("/barang");
     }
 
@@ -113,6 +117,7 @@ public class BarangController {
         barangDTO.setNamaTipeBarang(barangService.getStringTipeBarang(barang.getTipeBarang()));
         
         model.addAttribute("barangDTO", barangDTO);
+        model.addAttribute("page", "barang");
         return "form-update-barang";
     }
 
@@ -127,6 +132,7 @@ public class BarangController {
             }
 
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+            redirectAttributes.addFlashAttribute("page", "barang");
             return new RedirectView("/barang/" + barangDTO.getSku() + "/ubah");
         }
         
@@ -134,12 +140,14 @@ public class BarangController {
             var errorMessage = "Maaf, merk barang sudah ada";
             
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+            redirectAttributes.addFlashAttribute("page", "barang");
             return new RedirectView("/barang/" + barangDTO.getSku() + "/ubah");
         }
         
         var barangFromDTO = barangMapper.updateBarangRequestDTOToBarang(barangDTO);
         var barang = barangService.updateBarang(barangFromDTO);
         
+        redirectAttributes.addFlashAttribute("page", "barang");
         return new RedirectView("/barang/" + barang.getSku());
     }
 }

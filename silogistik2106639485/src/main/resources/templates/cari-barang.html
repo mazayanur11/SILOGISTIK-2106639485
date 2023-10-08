@@ -7,11 +7,9 @@
   <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
   <object th:include="~{fragments/common :: datatable}" th:remove="tag"></object>
   <title>Cari Barang</title>
-
 </head>
 
 <body>
-  <!-- Untuk mengatur tampilan tabel -->
   <script>
     $(document).ready(function () {
       $("#booksTable").DataTable({
@@ -27,13 +25,12 @@
       <h2>Cari Barang</h2>    
     </div>
     <div class="container mb-4">
-        <form class="d-flex m-5 gap-3" th:action="@{/gudang/cari-barang}" method="get">
-            <select class="form-control" name="sku" id="sku">
-                <option th:each="barang: ${listBarang}"
-                    th:value="${barang.sku}" th:text="${barang.merk}"></option>
-            </select>
-            <button class="btn btn-md btn-primary" type="submit">Cari</button>
-        </form>  
+      <form class="d-flex m-5 gap-3" th:action="@{/gudang/cari-barang}" method="get">
+        <select class="form-control" name="sku" id="sku">
+          <option th:each="barang: ${listBarang}" th:value="${barang.sku}" th:text="${barang.merk}"></option>
+        </select>
+        <button class="btn btn-md btn-primary" type="submit">Cari</button>
+      </form>  
       <!-- Membuat tampilan tabel buku dengan pagination -->
       <table id="booksTable" class="display">
         <thead>

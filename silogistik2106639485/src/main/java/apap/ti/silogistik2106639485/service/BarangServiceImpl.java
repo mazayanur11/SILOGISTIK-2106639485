@@ -33,7 +33,8 @@ public class BarangServiceImpl implements BarangService {
             if (barang.getSku().equals(sku)) {
                 return barang;
             }
-        }        
+        }   
+             
         return null;
     }
 

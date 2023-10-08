@@ -1,6 +1,5 @@
 package apap.ti.silogistik2106639485.dto.request;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

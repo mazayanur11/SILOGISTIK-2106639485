@@ -6,7 +6,7 @@
   <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
   <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
   <object th:include="~{fragments/common :: datatable}" th:remove="tag"></object>
-  <title>View All Barang</title>
+  <title>View All Permintaan Pengiriman</title>
 
 </head>
 
@@ -21,7 +21,7 @@
         // Menghilangkan sortable di kolom action
         columnDefs: [
           {
-            targets: 5,
+            targets: 6,
             orderable: false,
           }
         ],
@@ -31,32 +31,34 @@
   <nav th:replace="~{fragments/navbar :: navbar}"></nav>
   <div class="container">
     <div class="text-center pt-5">
-      <h2>Daftar Barang</h2> 
-      <a type="button" class="btn btn-primary m-2" th:href="@{/barang/tambah}">+ Tambah Barang</a>   
+      <h2>Daftar Permintaan Pengiriman</h2> 
+      <a type="button" class="btn btn-primary m-2" th:href="@{/permintaan-pengiriman/tambah}">+ Tambah Permintaan Pengiriman</a>   
+      <!-- <a type="button" class="btn btn-primary m-2">+ Tambah Permintaan Pengiriman</a>    -->
     </div>
     <div class="container mb-4">
-      <!-- Membuat tampilan tabel buku dengan pagination -->
       <table id="booksTable" class="display">
         <thead>
           <tr>
             <th>#</th>
-            <th>SKU</th>
-            <th>Merk</th>
-            <th>Stok</th>
-            <th>Harga</th>
+            <th>Waktu Permintaan</th>
+            <th>Nomor Pengiriman</th>
+            <th>Nama Penerima</th>
+            <th>Alamat Penerima</th>
+            <th>Tanggal Penerima</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr th:each="barang, iterationStatus : ${stokBarang}">
+          <tr th:each="permintaanPengiriman, iterationStatus : ${formattedDateTime}">
             <td th:text="${iterationStatus.index + 1}"></td>
-            <td th:text="${barang.key.sku}"></td>
-            <td th:text="${barang.key.merk}"></td>
-            <td th:text="${barang.value}"></td> <!-- blm bisa nampilin stok-->
-            <td th:text="'Rp' + ${barang.key.hargaBarang}"></td>
+            <td th:text="${permintaanPengiriman.value[0]}"></td>
+            <td th:text="${permintaanPengiriman.key.nomorPengiriman}"></td>
+            <td th:text="${permintaanPengiriman.key.namaPenerima}"></td>
+            <td th:text="${permintaanPengiriman.key.alamatPenerima}"></td>
+            <td th:text="${permintaanPengiriman.value[1]}"></td>
             <td>
-              <!-- <a type="button" class="btn btn-md btn-primary">Detail</a> -->
-              <a type="button" class="btn btn-md btn-secondary" th:href="@{/barang/{id}(id=${barang.key.sku})}">Detail</a>
+              <!-- <a type="button" class="btn btn-md btn-secondary">Detail</a> -->
+              <a type="button" class="btn btn-md btn-secondary" th:href="@{/permintaan-pengiriman/{id}(id=${permintaanPengiriman.key.id})}">Detail</a>
             </td>
           </tr>
         </tbody>

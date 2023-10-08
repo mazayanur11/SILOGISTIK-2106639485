@@ -2,11 +2,11 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8" />
-    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
-    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
-    <object th:include="~{fragments/common :: datatable}" th:remove="tag"></object>
-    <title>View Barang</title>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: datatable}" th:remove="tag"></object>
+  <title>View Barang</title>
 </head>
 
 <body>
@@ -18,85 +18,86 @@
       });
     });
   </script>
-    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-    <div class="container">
-        <div class="row justify-content-center mt-5 mb-5">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                  <h2 class="fw-bold">Detail Barang</h2>
-                  <a th:href="@{/barang/{id}/ubah(id=${barangDTO.sku})}" type="button" class="btn btn-primary btn-md m-2"><i class="bi bi-pencil"></i> Ubah Barang</a>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      Merk
-                    </div>
-                    <div class="col-8">
-                      <h6 class="card-title" th:text="': ' + ${barangDTO.merk}"></h6>
-                    </div>
-                  </div>
-                  <h1></h1>
-                  <div class="row">
-                    <div class="col">
-                      SKU
-                    </div>
-                    <div class="col-8">
-                      <h6 class="card-title" th:text="': ' + ${barangDTO.sku}"></h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      Tipe Barang
-                    </div>
-                    <div class="col-8">
-                      <h6 class="card-title" th:text="': ' + ${barangDTO.tipeBarang}"></h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      Total Stok
-                    </div>
-                    <div class="col-8">
-                      <h6 class="card-title" th:text="': ' + ${totalStok}"></h6>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      Harga
-                    </div>
-                    <div class="col-8">
-                      <h6 class="card-title" th:text="': Rp' + ${barangDTO.hargaBarang}"></h6>
-                    </div>
-                  </div>
-                </div>
-                <h1></h1>
-                <div class="row justify-content-center">
-                  <div class="col-12">
-                    <h5 class="fw-bold">Daftar Gudang</h5>
-                    <table id="booksTable" class="table table-striped table-bordered" style="width: 100%">
-                      <thead class="">
-                        <tr>
-                          <th>#</th>
-                          <th>Nama Gudang</th>
-                          <th>Alamat Gudang</th>
-                          <th>Stok</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr th:each="gudangBarang, iterationStatus : ${barangDTO.listGudangBarang}">
-                          <td th:text="${iterationStatus.index + 1}"></td>
-                          <td><a th:href="@{/gudang/{id}(id=${gudangBarang.Gudang.id})}" th:text="${gudangBarang.Gudang.nama}"></a></td>
-                          <td th:text="${gudangBarang.Gudang.alamatGudang}"></td>
-                          <td th:text="${gudangBarang.stok}"></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                  <div class="d-flex justify-content-center">
-                    <a th:href="@{/barang}" type="button" class="btn btn-secondary btn-md justify-content-center mb-3">Kembali</a>
-                  </div>
-              </div>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="row justify-content-center mt-5 mb-5">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2 class="fw-bold">Detail Barang</h2>
+          <a th:href="@{/barang/{id}/ubah(id=${barangDTO.sku})}" type="button" class="btn btn-primary btn-md m-2"><i class="bi bi-pencil"></i> Ubah Barang</a>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              Merk
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': ' + ${barangDTO.merk}"></h6>
+            </div>
+          </div>
+          <h1></h1>
+          <div class="row">
+            <div class="col">
+              SKU
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': ' + ${barangDTO.sku}"></h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              Tipe Barang
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': ' + ${barangDTO.tipeBarang}"></h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              Total Stok
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': ' + ${totalStok}"></h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              Harga
+            </div>
+            <div class="col-8">
+              <h6 class="card-title" th:text="': Rp' + ${barangDTO.hargaBarang}"></h6>
+            </div>
+          </div>
+          <h1></h1>
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <h5 class="fw-bold">Daftar gudang</h5>
+              <table id="booksTable" class="table table-striped table-bordered" style="width: 100%">
+                <thead class="">
+                  <tr>
+                    <th>#</th>
+                    <th>Nama Gudang</th>
+                    <th>Alamat Gudang</th>
+                    <th>Stok</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="gudangBarang, iterationStatus : ${barangDTO.listGudangBarang}">
+                    <td th:text="${iterationStatus.index + 1}"></td>
+                    <td><a th:href="@{/gudang/{id}(id=${gudangBarang.Gudang.id})}" th:text="${gudangBarang.Gudang.nama}"></a></td>
+                    <td th:text="${gudangBarang.Gudang.alamatGudang}"></td>
+                    <td th:text="${gudangBarang.stok}"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <a th:href="@{/barang}" type="button" class="btn btn-secondary btn-md justify-content-center mb-3">Kembali</a>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </body>
 </html>

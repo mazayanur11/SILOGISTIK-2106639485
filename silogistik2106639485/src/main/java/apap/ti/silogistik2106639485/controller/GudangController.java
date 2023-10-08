@@ -17,7 +17,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,6 +70,7 @@ public class GudangController {
 
         //Add variabel semua bukuModel ke "ListBuku" untuk dirender pada thymeleaf
         model.addAttribute("listGudang", listGudang);
+        model.addAttribute("page", "gudang");
         return "viewall-gudang";
     }
 
@@ -81,7 +81,7 @@ public class GudangController {
         ReadGudangResponseDTO gudangDTO = gudangMapper.gudangToReadGudangResponseDTO(gudang);
 
         model.addAttribute("gudangDTO", gudangDTO);
-
+        model.addAttribute("page", "gudang");
         return "view-gudang";
     }
 
@@ -95,7 +95,9 @@ public class GudangController {
         }
         
         List<Barang> listBarang = barangService.getAllBarang();
+
         model.addAttribute("listBarang", listBarang);
+        model.addAttribute("page", "gudang");
         return "cari-barang";
     }
 
@@ -108,6 +110,7 @@ public class GudangController {
 
         model.addAttribute("gudangDTO", gudangDTO);
         model.addAttribute("listBarang", listBarang);
+        model.addAttribute("page", "gudang");
         return "form-restock-barang";
     }
 
@@ -130,9 +133,12 @@ public class GudangController {
             Gudang gudang = gudangMapper.updateGudangRequestDTOToGudang(gudangDTO);
             gudangService.restockBarang(gudang);
             model.addAttribute("id", gudang.getId());
+
+            redirectAttributes.addFlashAttribute("page", "gudang");
             return new RedirectView("/gudang/" + gudangDTO.getId());
         } catch (DataIntegrityViolationException e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Barang sudah terdaftar di gudang");
+            redirectAttributes.addFlashAttribute("page", "gudang");
             return new RedirectView("/gudang/" + gudangDTO.getId() + "/restock-barang");
         }
 
@@ -151,7 +157,7 @@ public class GudangController {
 
         model.addAttribute("gudangDTO", updateGudangRequestDTO);
         model.addAttribute("listBarang", barangService.getAllBarang());
-
+        model.addAttribute("page", "gudang");
         return "form-restock-barang";
     }
 }
