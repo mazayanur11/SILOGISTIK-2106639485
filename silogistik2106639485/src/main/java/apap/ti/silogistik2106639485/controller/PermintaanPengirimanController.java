@@ -1,14 +1,20 @@
 package apap.ti.silogistik2106639485.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -51,18 +58,15 @@ public class PermintaanPengirimanController {
     @GetMapping("permintaan-pengiriman")
     public String listPermintaanPengiriman(Model model) {
         List<PermintaanPengiriman> listPermintaanPengiriman = permintaanPengirimanService.getAllPermintaanPengiriman();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm");
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        Dictionary<PermintaanPengiriman, List<String>> formattedDateTime = new Hashtable<>();
+        List<ReadPermintaanPengirimanResponseDTO> listPermintaanPengirimanDTO = new ArrayList<>();
         
         for (PermintaanPengiriman permintaanPengiriman : listPermintaanPengiriman) {
-            List<String> values = new ArrayList<>();
-            values.add(permintaanPengiriman.getWaktuPermintaan().format(dateTimeFormatter));
-            values.add(permintaanPengiriman.getTanggalPengiriman().format(dateFormatter));
-            formattedDateTime.put(permintaanPengiriman, values);
+            ReadPermintaanPengirimanResponseDTO readPermintaanPengirimanResponseDTO = permintaanPengirimanMapper.permintaanPengirimanToReadPermintaanPengirimanResponseDTO(permintaanPengiriman);
+            listPermintaanPengirimanDTO.add(readPermintaanPengirimanResponseDTO);
         }
+
         model.addAttribute("listPermintaanPengiriman", listPermintaanPengiriman);
-        model.addAttribute("formattedDateTime", formattedDateTime);
+        model.addAttribute("listPermintaanPengirimanDTO", listPermintaanPengirimanDTO);
         model.addAttribute("page", "permintaan-pengiriman");
         return "viewall-permintaan-pengiriman";
     }
@@ -71,10 +75,6 @@ public class PermintaanPengirimanController {
     public String detailPermintaanPengiriman(@PathVariable(value = "idPermintaanPengiriman") Long id, Model model) {
         PermintaanPengiriman permintaanPengiriman = permintaanPengirimanService.getPermintaanPengirimanById(id);
         ReadPermintaanPengirimanResponseDTO permintaanPengirimanDTO = permintaanPengirimanMapper.permintaanPengirimanToReadPermintaanPengirimanResponseDTO(permintaanPengiriman);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm");
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String waktuPermintaan = permintaanPengiriman.getWaktuPermintaan().format(dateTimeFormatter);
-        String tanggalPengiriman = permintaanPengiriman.getTanggalPengiriman().format(dateFormatter);
         String jenisLayanan = permintaanPengirimanService.getStringJenisLayanan(permintaanPengiriman.getJenisLayanan());
         Dictionary<Barang, Long> totalHargaBarang = new Hashtable<>();
 
@@ -83,8 +83,6 @@ public class PermintaanPengirimanController {
         }
 
         model.addAttribute("permintaanPengirimanDTO", permintaanPengirimanDTO);
-        model.addAttribute("waktuPermintaan", waktuPermintaan);
-        model.addAttribute("tanggalPengiriman", tanggalPengiriman);
         model.addAttribute("jenisLayanan", jenisLayanan);
         model.addAttribute("totalHargaBarang", totalHargaBarang);
         model.addAttribute("page", "permintaan-pengiriman");
@@ -148,5 +146,52 @@ public class PermintaanPengirimanController {
         model.addAttribute("listKaryawan", karyawanService.getAllKaryawan());
         model.addAttribute("page", "permintaan-pengiriman");
         return "form-create-permintaan-pengiriman";
+    }
+
+    @GetMapping("permintaan-pengiriman/{idPermintaanPengiriman}/cancel")
+    public String cancelPermintaan(@PathVariable("idPermintaanPengiriman") Long id, Model model) {
+        PermintaanPengiriman permintaanPengiriman = permintaanPengirimanService.getPermintaanPengirimanById(id);
+
+        try {
+            permintaanPengirimanService.cancelPermintaan(permintaanPengiriman);
+            
+            model.addAttribute("successMessage", "Permintaan pengiriman dengan nomor pengiriman " + permintaanPengiriman.getNomorPengiriman() + " berhasil dihapus");
+            return "success-cancel-permintaan";
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "failed-cancel-permintaan";
+        }
+    }
+
+    @GetMapping("filter-permintaan-pengiriman")
+    public String filterPermintaanPengiriman(
+        @RequestParam(name = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String start, 
+        @RequestParam(name = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String end, 
+        @RequestParam(name = "sku", required = false) String sku, Model model
+    ) {
+        if (start != null && end != null && sku != null) {
+            Barang barang = barangService.getBarangById(sku);
+            LocalTime localTime = LocalTime.of(0, 0);
+            LocalDate localStartDate = LocalDate.parse(start);
+            LocalDate localEndDate = LocalDate.parse(end);
+
+            model.addAttribute("listBarang", barangService.getAllBarangSortedByMerk());
+            model.addAttribute("listPermintaanPengiriman", permintaanPengirimanService.filterWaktuPenerimaan(LocalDateTime.of(localStartDate, localTime), LocalDateTime.of(localEndDate, localTime), barang));
+            model.addAttribute("page", "bonus");
+            return "filter-permintaan-pengiriman";
+        }
+
+        List<Barang> listBarang = barangService.getAllBarangSortedByMerk();
+        List<PermintaanPengiriman> listPermintaanPengiriman = permintaanPengirimanService.getAllPermintaanPengiriman();
+        List<ReadPermintaanPengirimanResponseDTO> listPermintaanPengirimanDTO = new ArrayList<>();
+
+        for (PermintaanPengiriman permintaanPengiriman : listPermintaanPengiriman) {
+            listPermintaanPengirimanDTO.add(permintaanPengirimanMapper.permintaanPengirimanToReadPermintaanPengirimanResponseDTO(permintaanPengiriman));
+        }
+        
+        model.addAttribute("listBarang", listBarang);
+        model.addAttribute("listPermintaanPengiriman", listPermintaanPengirimanDTO);
+        model.addAttribute("page", "bonus");
+        return "filter-permintaan-pengiriman";
     }
 }

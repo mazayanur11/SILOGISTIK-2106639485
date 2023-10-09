@@ -106,7 +106,13 @@ public class Silogistik2106639485Application {
 				permintaanPengirimanDTO.setTanggalPengiriman(LocalDate.ofEpochDay(randomEpochDay));
 				permintaanPengirimanDTO.setBiayaPengiriman(faker.number().numberBetween(1, 100000));
 				permintaanPengirimanDTO.setJenisLayanan(1 + (int)Math.random()*3);
-				permintaanPengirimanDTO.setWaktuPermintaan(LocalDateTime.now());
+				int year = faker.number().numberBetween(2023, 2024);
+				int month = faker.number().numberBetween(1, 13);
+				int day = faker.number().numberBetween(1, 28);
+				int hour = faker.number().numberBetween(0, 23);
+				int minute = faker.number().numberBetween(0, 59);
+				int second = faker.number().numberBetween(0, 59);
+				permintaanPengirimanDTO.setWaktuPermintaan(LocalDateTime.of(year, month, day, hour, minute, second));
 				permintaanPengirimanDTO.setKaryawan(karyawan);
 				permintaanPengirimanDTO.setNomorPengiriman(permintaanPengirimanService.generateNomorPengiriman(permintaanPengirimanDTO));
 				var permintaanPengiriman = permintaanPengirimanMapper.createPermintaanPengirimanRequestDTOToPermintaanPengiriman(permintaanPengirimanDTO);

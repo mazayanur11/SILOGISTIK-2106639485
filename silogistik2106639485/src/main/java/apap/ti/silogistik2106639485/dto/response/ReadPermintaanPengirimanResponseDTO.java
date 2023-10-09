@@ -25,4 +25,7 @@ public class ReadPermintaanPengirimanResponseDTO {
     private LocalDateTime waktuPermintaan;
     private Karyawan karyawan;
     private List<PermintaanPengirimanBarang> listPermintaanPengirimanBarang;
+    private Boolean isCancelable;
+    private String formattedWaktuPermintaan;
+    private String formattedTanggalPengiriman;
 }

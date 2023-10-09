@@ -24,7 +24,7 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h2 class="fw-bold">Detail Permintaan Pengiriman</h2>
-          <a th:href="@{/permintaan-pengiriman}" type="button" class="btn btn-danger btn-md m-2">Cancel Permintaan</a>
+          <a th:if="${permintaanPengirimanDTO.isCancelable}" th:href="@{/permintaan-pengiriman/{id}/cancel(id=${permintaanPengirimanDTO.id})}" type="button" class="btn btn-danger btn-md m-2">Cancel Permintaan</a>
         </div>
         <div class="card-body">
           <div class="row">
@@ -41,7 +41,7 @@
               Waktu Permintaan
             </div>
             <div class="col-8">
-              <h6 class="card-title" th:text="': ' + ${waktuPermintaan}"></h6>
+              <h6 class="card-title" th:text="': ' + ${permintaanPengirimanDTO.formattedWaktuPermintaan}"></h6>
             </div>
           </div>
           <div class="row">
@@ -57,7 +57,7 @@
               Waktu Pengiriman
             </div>
             <div class="col-8">
-              <h6 class="card-title" th:text="': ' + ${tanggalPengiriman}"></h6>
+              <h6 class="card-title" th:text="': ' + ${permintaanPengirimanDTO.formattedTanggalPengiriman}"></h6>
             </div>
           </div>
           <div class="row">

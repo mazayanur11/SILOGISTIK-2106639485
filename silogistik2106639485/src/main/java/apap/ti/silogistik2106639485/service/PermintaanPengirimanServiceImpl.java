@@ -2,16 +2,22 @@ package apap.ti.silogistik2106639485.service;
 
 import apap.ti.silogistik2106639485.repository.PermintaanPengirimanBarangDb;
 import apap.ti.silogistik2106639485.repository.PermintaanPengirimanDb;
+import apap.ti.silogistik2106639485.dto.PermintaanPengirimanMapper;
 import apap.ti.silogistik2106639485.dto.request.CreatePermintaanPengirimanRequestDTO;
+import apap.ti.silogistik2106639485.dto.response.ReadPermintaanPengirimanResponseDTO;
+import apap.ti.silogistik2106639485.model.Barang;
 import apap.ti.silogistik2106639485.model.PermintaanPengiriman;
 import apap.ti.silogistik2106639485.model.PermintaanPengirimanBarang;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,8 +28,11 @@ public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanServ
     @Autowired
     PermintaanPengirimanBarangDb permintaanPengirimanBarangDb;
 
+    @Autowired
+    PermintaanPengirimanMapper permintaanPengirimanMapper;
+
     @Override
-    public List<PermintaanPengiriman> getAllPermintaanPengiriman() { return permintaanPengirimanDb.findAll(); }
+    public List<PermintaanPengiriman> getAllPermintaanPengiriman() { return permintaanPengirimanDb.findAllByOrderByWaktuPermintaanDesc(); }
 
     @Override
     public String generateNomorPengiriman(CreatePermintaanPengirimanRequestDTO createPermintaanPengirimanRequestDTO) {
@@ -82,5 +91,35 @@ public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanServ
         } else {
             return "Hemat";
         }
+    }
+
+    @Override
+    public void cancelPermintaan(PermintaanPengiriman permintaanPengiriman) {
+        LocalDateTime dateTime24Hours = LocalDateTime.now().plus(24, ChronoUnit.HOURS);
+
+        if (!permintaanPengiriman.getWaktuPermintaan().isAfter(dateTime24Hours) && (!permintaanPengiriman.getWaktuPermintaan().isBefore(LocalDateTime.now())) && !permintaanPengiriman.isCanceled()) {
+            permintaanPengiriman.setCanceled(true);
+            savePermintaanPengiriman(permintaanPengiriman);
+        } else {
+            throw new DataIntegrityViolationException("Permintaan pengiriman dengan nomor " + permintaanPengiriman.getNomorPengiriman() + " sudah tidak dapat dicancel!");
+        }
+    }
+
+    @Override
+    public List<ReadPermintaanPengirimanResponseDTO> filterWaktuPenerimaan(LocalDateTime start, LocalDateTime end, Barang barang) {
+        List<Long> listIdPermintaanFromBarang = new ArrayList<>();
+
+        for (PermintaanPengirimanBarang permintaanPengirimanBarang : barang.getListPermintaanPengirimanBarang()) {
+            listIdPermintaanFromBarang.add(permintaanPengirimanBarang.getPermintaanPengiriman().getId());
+        }
+
+        List<PermintaanPengiriman> listPermintaanPengiriman = permintaanPengirimanDb.findByWaktuPermintaanBetweenAndIdInOrderByWaktuPermintaanDesc(start, end, listIdPermintaanFromBarang);
+
+        List<ReadPermintaanPengirimanResponseDTO> formattedPermintaanPengiriman = new ArrayList<>();
+        for (PermintaanPengiriman permintaanPengiriman : listPermintaanPengiriman) {
+            formattedPermintaanPengiriman.add(permintaanPengirimanMapper.permintaanPengirimanToReadPermintaanPengirimanResponseDTO(permintaanPengiriman));
+        }
+
+        return formattedPermintaanPengiriman;
     }
 }

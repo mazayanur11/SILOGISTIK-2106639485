@@ -28,7 +28,6 @@ public class GudangBarang {
     private Barang barang;
 
     @NotNull
-    @Positive
     @Column(name = "stok", nullable = false)
     private int stok;
 }

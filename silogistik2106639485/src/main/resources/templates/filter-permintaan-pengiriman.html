@@ -17,24 +17,37 @@
       $("#booksTable").DataTable({
         dom: "Qlfrtip",
         // Memunculkan item dengan opsi 5, 10, 20
-        lengthMenu: [5, 10, 20],
-        // Menghilangkan sortable di kolom action
-        columnDefs: [
-          {
-            targets: 6,
-            orderable: false,
-          }
-        ],
+        lengthMenu: [5, 10, 20]
       });
     });
   </script>
   <nav th:replace="~{fragments/navbar :: navbar}"></nav>
   <div class="container">
     <div class="text-center pt-5">
-      <h2>Daftar Permintaan Pengiriman</h2> 
-      <a type="button" class="btn btn-primary m-2" th:href="@{/permintaan-pengiriman/tambah}">+ Tambah Permintaan Pengiriman</a>   
+      <h2>Filter Permintaan Pengiriman</h2> 
+      <br><br>
     </div>
     <div class="container mb-4">
+        <form class="align-items-center" th:action="@{/filter-permintaan-pengiriman}" method="get">
+            <select class="form-control" name="sku" id="sku">
+                <option th:each="barang: ${listBarang}" th:value="${barang.sku}" th:text="${barang.merk}"></option>
+            </select>
+            <br>
+            <div class="row">
+                <div class="col-6">
+                    <input name="start" required class="form-control" type="date" th:value="*{start}"/>
+                </div>
+                <div class="col-1">
+                    hingga
+                </div>
+                <div class="col-5">
+                    <input name="end" required class="form-control" type="date" th:value="*{end}"/>
+                </div>
+            </div>
+            <br>
+            <button type="submit" style="float:right; column-span: all;" class="btn btn-primary" th:href="@{/filter-permintaan-pengiriman}">Cari</button>
+        </form>
+        <br><br><br>
       <table id="booksTable" class="display">
         <thead>
           <tr>
@@ -44,20 +57,16 @@
             <th>Nama Penerima</th>
             <th>Alamat Penerima</th>
             <th>Tanggal Penerima</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr th:each="permintaanPengiriman, iterationStatus : ${listPermintaanPengirimanDTO}">
+          <tr th:each="permintaanPengiriman, iterationStatus : ${listPermintaanPengiriman}">
             <td th:text="${iterationStatus.index + 1}"></td>
             <td th:text="${permintaanPengiriman.formattedWaktuPermintaan}"></td>
             <td th:text="${permintaanPengiriman.nomorPengiriman}"></td>
             <td th:text="${permintaanPengiriman.namaPenerima}"></td>
             <td th:text="${permintaanPengiriman.alamatPenerima}"></td>
             <td th:text="${permintaanPengiriman.formattedTanggalPengiriman}"></td>
-            <td>
-              <a type="button" class="btn btn-md btn-secondary" th:href="@{/permintaan-pengiriman/{id}(id=${permintaanPengiriman.id})}">Detail</a>
-            </td>
           </tr>
         </tbody>
       </table>
