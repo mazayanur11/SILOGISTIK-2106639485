@@ -39,6 +39,7 @@ import apap.ti.silogistik2106639485.model.PermintaanPengirimanBarang;
 import apap.ti.silogistik2106639485.service.BarangService;
 import apap.ti.silogistik2106639485.service.KaryawanService;
 import apap.ti.silogistik2106639485.service.PermintaanPengirimanService;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 
 @Controller
@@ -121,12 +122,19 @@ public class PermintaanPengirimanController {
         var permintaanPengiriman = permintaanPengirimanMapper.createPermintaanPengirimanRequestDTOToPermintaanPengiriman(permintaanPengirimanDTO);
         permintaanPengiriman.setWaktuPermintaan(LocalDateTime.now());
         permintaanPengiriman.setNomorPengiriman(permintaanPengirimanService.generateNomorPengiriman(permintaanPengirimanDTO));
-        permintaanPengirimanService.savePermintaanPengiriman(permintaanPengiriman);
         
-        model.addAttribute("permintaanPengirimanDTO", permintaanPengirimanDTO);
-        model.addAttribute("listKaryawan", karyawanService.getAllKaryawan());
-        model.addAttribute("listBarang", barangService.getAllBarang());
-        redirectAttributes.addFlashAttribute("page", "permintaan-pengiriman");
+        try {
+            permintaanPengirimanService.savePermintaanPengiriman(permintaanPengiriman);
+            
+            model.addAttribute("permintaanPengirimanDTO", permintaanPengirimanDTO);
+            model.addAttribute("listKaryawan", karyawanService.getAllKaryawan());
+            model.addAttribute("listBarang", barangService.getAllBarang());
+            redirectAttributes.addFlashAttribute("page", "permintaan-pengiriman");
+        } catch (ConstraintViolationException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Kuantitas Pengiriman harus positif");
+            redirectAttributes.addFlashAttribute("page", "permintaan-pengiriman");
+            return new RedirectView("/permintaan-pengiriman/tambah");
+        }
         return new RedirectView("/permintaan-pengiriman");
     }
     

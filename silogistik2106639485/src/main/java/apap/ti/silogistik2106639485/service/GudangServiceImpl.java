@@ -43,11 +43,13 @@ public class GudangServiceImpl implements GudangService {
             if (gudangBarangDTO.getId() != null && gudangBarangService.getGudangBarangById(gudangBarangDTO.getId()) != null) {
                 GudangBarang gudangBarang = gudangBarangService.getGudangBarangById(gudangBarangDTO.getId());
                 gudangBarang.setStok(gudangBarangDTO.getStok());
-                gudangBarangService.saveGudangBarang(gudangBarang);
+                // gudangBarangService.saveGudangBarang(gudangBarang);
             } else {
                 gudangBarangDTO.setGudang(gudang);
-                gudangBarangService.saveGudangBarang(gudangBarangDTO);
+                // gudangBarangService.saveGudangBarang(gudangBarangDTO);
             }
         }
+
+        gudangBarangService.saveAllGudangBarang(gudangFromDto.getListGudangBarang());
     }
 }

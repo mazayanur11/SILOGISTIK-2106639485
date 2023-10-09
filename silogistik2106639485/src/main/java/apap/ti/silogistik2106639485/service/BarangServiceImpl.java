@@ -45,7 +45,7 @@ public class BarangServiceImpl implements BarangService {
 
     @Override
     public List<Barang> getAllBarangSortedByMerk() {
-        return barangDb.getAllByOrderByMerk();
+        return barangDb.getAllByOrderByMerkAsc();
     }
 
     @Override
@@ -84,12 +84,12 @@ public class BarangServiceImpl implements BarangService {
 
     @Override
     public boolean isMerkExist(String merk) {
-        return getAllBarang().stream().anyMatch(b -> b.getMerk().equals(merk));
+        return getAllBarang().stream().anyMatch(b -> b.getMerk().equalsIgnoreCase(merk));
     }
 
     @Override
     public boolean isMerkExist(String merk, String sku) {
-        return getAllBarang().stream().anyMatch(b -> b.getMerk().equals(merk) && !b.getSku().equals(sku));
+        return getAllBarang().stream().anyMatch(b -> b.getMerk().equalsIgnoreCase(merk) && !b.getSku().equals(sku));
     }
 
     @Override

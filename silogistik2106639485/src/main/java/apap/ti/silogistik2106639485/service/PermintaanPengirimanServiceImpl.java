@@ -2,6 +2,7 @@ package apap.ti.silogistik2106639485.service;
 
 import apap.ti.silogistik2106639485.repository.PermintaanPengirimanBarangDb;
 import apap.ti.silogistik2106639485.repository.PermintaanPengirimanDb;
+import jakarta.transaction.Transactional;
 import apap.ti.silogistik2106639485.dto.PermintaanPengirimanMapper;
 import apap.ti.silogistik2106639485.dto.request.CreatePermintaanPengirimanRequestDTO;
 import apap.ti.silogistik2106639485.dto.response.ReadPermintaanPengirimanResponseDTO;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanService {
     @Autowired
     PermintaanPengirimanDb permintaanPengirimanDb;
@@ -63,10 +65,12 @@ public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanServ
     @Override
     public void savePermintaanPengiriman(PermintaanPengiriman permintaanPengiriman) {
         permintaanPengirimanDb.save(permintaanPengiriman);
+
         for (PermintaanPengirimanBarang permintaanPengirimanBarang : permintaanPengiriman.getListPermintaanPengirimanBarang()) {
             permintaanPengirimanBarang.setPermintaanPengiriman(permintaanPengiriman);
-            permintaanPengirimanBarangDb.save(permintaanPengirimanBarang);
         }
+
+        permintaanPengirimanBarangDb.saveAll(permintaanPengiriman.getListPermintaanPengirimanBarang());
     }
 
     @Override
@@ -95,9 +99,7 @@ public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanServ
 
     @Override
     public void cancelPermintaan(PermintaanPengiriman permintaanPengiriman) {
-        LocalDateTime dateTime24Hours = LocalDateTime.now().plus(24, ChronoUnit.HOURS);
-
-        if (!permintaanPengiriman.getWaktuPermintaan().isAfter(dateTime24Hours) && (!permintaanPengiriman.getWaktuPermintaan().isBefore(LocalDateTime.now())) && !permintaanPengiriman.isCanceled()) {
+        if (!LocalDateTime.now().isAfter(permintaanPengiriman.getWaktuPermintaan()) && !permintaanPengiriman.isCanceled()) {
             permintaanPengiriman.setCanceled(true);
             savePermintaanPengiriman(permintaanPengiriman);
         } else {

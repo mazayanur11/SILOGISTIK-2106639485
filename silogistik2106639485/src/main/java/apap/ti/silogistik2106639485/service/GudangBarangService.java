@@ -13,4 +13,6 @@ public interface GudangBarangService {
     GudangBarang getGudangBarangById(Long id);
 
     List<GudangBarang> getStokOfBarang(Barang barang);
+
+    void saveAllGudangBarang(List<GudangBarang> listGudangBarang);
 }

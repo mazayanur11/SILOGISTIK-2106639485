@@ -36,4 +36,9 @@ public class GudangBarangServiceImpl implements GudangBarangService {
     public List<GudangBarang> getStokOfBarang(Barang barang) {
         return gudangBarangDb.findAllByBarang(barang);
     }
+
+    @Override
+    public void saveAllGudangBarang(List<GudangBarang> listGudangBarang) {
+        gudangBarangDb.saveAll(listGudangBarang);
+    }
 }

@@ -61,6 +61,7 @@ public class BarangController {
 
         model.addAttribute("barangDTO", barangDTO);
         model.addAttribute("totalStok", totalStok);
+        model.addAttribute("tipeBarang", barangService.getStringTipeBarang(barangDTO.getTipeBarang()));
         model.addAttribute("page", "barang");
         return "view-barang";
     }

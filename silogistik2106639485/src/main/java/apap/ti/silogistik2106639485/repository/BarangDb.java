@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface BarangDb extends JpaRepository<Barang, String> {
     long countByTipeBarang(int tipeBarang);
 
-    List<Barang> getAllByOrderByMerk();
+    List<Barang> getAllByOrderByMerkAsc();
 }

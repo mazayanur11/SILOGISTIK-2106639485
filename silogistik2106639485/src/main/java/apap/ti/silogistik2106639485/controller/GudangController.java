@@ -4,6 +4,7 @@ import apap.ti.silogistik2106639485.service.BarangService;
 import apap.ti.silogistik2106639485.service.GudangService;
 import apap.ti.silogistik2106639485.service.KaryawanService;
 import apap.ti.silogistik2106639485.service.PermintaanPengirimanService;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import apap.ti.silogistik2106639485.dto.GudangMapper;
 import apap.ti.silogistik2106639485.dto.request.UpdateGudangRequestDTO;
@@ -17,6 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -94,7 +96,7 @@ public class GudangController {
             model.addAttribute("listGudangBarang", listGudangBarang);
         }
         
-        List<Barang> listBarang = barangService.getAllBarang();
+        List<Barang> listBarang = barangService.getAllBarangSortedByMerk();
 
         model.addAttribute("listBarang", listBarang);
         model.addAttribute("page", "gudang");
@@ -116,18 +118,18 @@ public class GudangController {
 
     @PostMapping("gudang/{idGudang}/restock-barang")
     public RedirectView restockBarang(@Valid @ModelAttribute UpdateGudangRequestDTO gudangDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
-        // if (bindingResult.hasErrors()) {
-        //     StringBuilder errorMessage = new StringBuilder();
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMessage = new StringBuilder();
 
-        //     for (FieldError error : bindingResult.getFieldErrors()) {
-        //         String defaultMessage = error.getDefaultMessage();
-        //         errorMessage.append(defaultMessage).append("<br>");
-        //     }
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                String defaultMessage = error.getDefaultMessage();
+                errorMessage.append(defaultMessage).append("<br>");
+            }
 
-        //     model.addAttribute("gudangDTO", gudangDTO);
-        //     redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-        //     return new RedirectView("/gudang/restock-barang");
-        // }
+            model.addAttribute("gudangDTO", gudangDTO);
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+            return new RedirectView("/gudang/restock-barang");
+        }
 
         try {
             Gudang gudang = gudangMapper.updateGudangRequestDTOToGudang(gudangDTO);
@@ -140,6 +142,9 @@ public class GudangController {
             redirectAttributes.addFlashAttribute("errorMessage", "Barang sudah terdaftar di gudang");
             redirectAttributes.addFlashAttribute("page", "gudang");
             return new RedirectView("/gudang/" + gudangDTO.getId() + "/restock-barang");
+        } catch (ConstraintViolationException e) {
+            redirectAttributes.addFlashAttribute("error", "Kuantitas pengiriman harus positif");
+            return new RedirectView("/permintaan-pengiriman/tambah");
         }
 
     }
