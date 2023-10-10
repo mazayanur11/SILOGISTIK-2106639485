@@ -29,8 +29,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.List;
 
 @Controller
@@ -68,15 +66,9 @@ public class PermintaanPengirimanController {
         PermintaanPengiriman permintaanPengiriman = permintaanPengirimanService.getPermintaanPengirimanById(id);
         ReadPermintaanPengirimanResponseDTO permintaanPengirimanDTO = permintaanPengirimanMapper.permintaanPengirimanToReadPermintaanPengirimanResponseDTO(permintaanPengiriman);
         String jenisLayanan = permintaanPengirimanService.getStringJenisLayanan(permintaanPengiriman.getJenisLayanan());
-        Dictionary<Barang, Long> totalHargaBarang = new Hashtable<>();
-
-        for (PermintaanPengirimanBarang permintaanPengirimanBarang : permintaanPengiriman.getListPermintaanPengirimanBarang()) {
-            totalHargaBarang.put(permintaanPengirimanBarang.getBarang(), permintaanPengirimanBarang.getBarang().getHargaBarang() * permintaanPengirimanBarang.getKuantitasPengiriman());
-        }
 
         model.addAttribute("permintaanPengirimanDTO", permintaanPengirimanDTO);
         model.addAttribute("jenisLayanan", jenisLayanan);
-        model.addAttribute("totalHargaBarang", totalHargaBarang);
         model.addAttribute("page", "permintaan-pengiriman");
         return "view-permintaan-pengiriman";
     }
@@ -134,6 +126,11 @@ public class PermintaanPengirimanController {
             redirectAttributes.addFlashAttribute("errorMessage", "Kuantitas Pengiriman harus positif");
             redirectAttributes.addFlashAttribute("page", "permintaan-pengiriman");
             return new RedirectView("/permintaan-pengiriman/tambah");
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Tidak boleh ada barang yang duplikat");
+            redirectAttributes.addFlashAttribute("page", "permintaan-pengiriman");
+            return new RedirectView("/permintaan-pengiriman/tambah");
+
         }
         
         return new RedirectView("/permintaan-pengiriman");

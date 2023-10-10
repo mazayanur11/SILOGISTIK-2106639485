@@ -55,14 +55,14 @@
             <th>Nomor Pengiriman</th>
             <th>Nama Penerima</th>
             <th>Alamat Penerima</th>
-            <th>Tanggal Penerima</th>
+            <th>Tanggal Pengiriman</th>
           </tr>
         </thead>
         <tbody>
           <tr th:each="permintaanPengiriman, iterationStatus : ${listPermintaanPengiriman}">
             <td th:text="${iterationStatus.index + 1}"></td>
             <td th:text="${permintaanPengiriman.formattedWaktuPermintaan}"></td>
-            <td th:text="${permintaanPengiriman.nomorPengiriman}"></td>
+            <td><a th:href="@{/permintaan-pengiriman/{id}(id=${permintaanPengiriman.id})}" th:text="${permintaanPengiriman.nomorPengiriman}"></a></td>
             <td th:text="${permintaanPengiriman.namaPenerima}"></td>
             <td th:text="${permintaanPengiriman.alamatPenerima}"></td>
             <td th:text="${permintaanPengiriman.formattedTanggalPengiriman}"></td>

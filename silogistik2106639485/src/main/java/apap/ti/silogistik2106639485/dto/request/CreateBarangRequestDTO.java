@@ -18,7 +18,7 @@ public class CreateBarangRequestDTO {
     @NotBlank(message = "Merk Barang tidak boleh kosong")
     private String merk;
 
-    @Positive(message = "Harga tidak boleh kurang dari 0")
+    @Positive(message = "Harga harus lebih dari 0")
     @NotNull(message = "Harga Barang tidak boleh kosong")
     private Long hargaBarang;
 }

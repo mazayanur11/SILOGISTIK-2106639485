@@ -56,7 +56,7 @@ public class Silogistik2106639485Application {
 		return args -> {
 			var faker = new Faker(new Locale("in-ID"));
 
-			for (int i = 0; i < 20; i++) {
+			for (int i = 0; i < 5; i++) {
 				var barangDTO = new CreateBarangRequestDTO();
 				double randomTipe = 1 + Math.random()*4;
 				int randomTipeBarang = (int) randomTipe;

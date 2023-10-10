@@ -4,7 +4,6 @@ import apap.ti.silogistik2106639485.service.BarangService;
 import apap.ti.silogistik2106639485.service.GudangService;
 import apap.ti.silogistik2106639485.service.KaryawanService;
 import apap.ti.silogistik2106639485.service.PermintaanPengirimanService;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import apap.ti.silogistik2106639485.dto.GudangMapper;
 import apap.ti.silogistik2106639485.dto.request.UpdateGudangRequestDTO;
@@ -15,6 +14,7 @@ import apap.ti.silogistik2106639485.model.GudangBarang;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -138,9 +138,9 @@ public class GudangController {
             redirectAttributes.addFlashAttribute("errorMessage", "Barang sudah terdaftar di gudang");
             redirectAttributes.addFlashAttribute("page", "gudang");
             return new RedirectView("/gudang/" + gudangDTO.getId() + "/restock-barang");
-        } catch (ConstraintViolationException e) {
-            redirectAttributes.addFlashAttribute("error", "Kuantitas pengiriman harus positif");
-            return new RedirectView("/permintaan-pengiriman/tambah");
+        } catch (TransactionSystemException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Stok harus positif");
+            return new RedirectView("/gudang/" + gudangDTO.getId() + "/restock-barang");
         }
     }
 

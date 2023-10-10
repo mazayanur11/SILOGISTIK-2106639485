@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "permintaan_pengiriman_barang")
+@Table(name = "permintaan_pengiriman_barang", uniqueConstraints = @UniqueConstraint(columnNames = {"sku_barang", "id_permintaan_pengiriman"}))
 public class PermintaanPengirimanBarang {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -24,7 +24,7 @@ public class PermintaanPengirimanBarang {
     private PermintaanPengiriman permintaanPengiriman;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_barang", referencedColumnName = "sku")
+    @JoinColumn(name = "sku_barang", referencedColumnName = "sku")
     private Barang barang;
 
     @NotNull
