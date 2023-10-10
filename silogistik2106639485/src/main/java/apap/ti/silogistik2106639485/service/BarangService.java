@@ -27,4 +27,6 @@ public interface BarangService {
     Barang updateBarang(Barang barangFromDTO);
 
     String getStringTipeBarang(int tipeBarang);
+
+    int getStockBarang(Barang barang);
 }

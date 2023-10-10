@@ -118,4 +118,16 @@ public class BarangServiceImpl implements BarangService {
             return "Perlengkapan Rumah";
         }
     }
+
+    @Override
+    public int getStockBarang(Barang barang) {
+        List<GudangBarang> listGudangBarang = barang.getListGudangBarang();
+        int totalStok = 0;
+
+        for (GudangBarang gudangBarang : listGudangBarang) {
+            totalStok += gudangBarang.getStok();
+        }
+        
+        return totalStok;
+    }
 }

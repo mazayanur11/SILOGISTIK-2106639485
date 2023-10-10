@@ -19,7 +19,7 @@ public interface PermintaanPengirimanMapper {
 
     @AfterMapping
     default void setIsCancelAbleWaktuPermintaanTanggalPengiriman(@MappingTarget ReadPermintaanPengirimanResponseDTO readPermintaanPengirimanResponseDTO, PermintaanPengiriman permintaanPengiriman) {
-        if (!LocalDateTime.now().isAfter(permintaanPengiriman.getWaktuPermintaan()) && !permintaanPengiriman.isCanceled()) {
+        if (!LocalDateTime.now().isAfter(permintaanPengiriman.getWaktuPermintaan().plusHours(24)) && !permintaanPengiriman.isCanceled()) {
             readPermintaanPengirimanResponseDTO.setIsCancelable(true);
         } else {
             readPermintaanPengirimanResponseDTO.setIsCancelable(false);

@@ -109,8 +109,17 @@ public class PermintaanPengirimanController {
             redirectAttributes.addFlashAttribute("page", "permintaan-pengiriman");
             return new RedirectView("/permintaan-pengiriman/tambah");
         }
-        
+
         var permintaanPengiriman = permintaanPengirimanMapper.createPermintaanPengirimanRequestDTOToPermintaanPengiriman(permintaanPengirimanDTO);
+
+        for (PermintaanPengirimanBarang permintaanPengirimanBarang : permintaanPengiriman.getListPermintaanPengirimanBarang()) {
+            if (!permintaanPengirimanService.isStokCukup(barangService.getBarangById(permintaanPengirimanBarang.getBarang().getSku()), permintaanPengirimanBarang.getKuantitasPengiriman())) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Stok barang tidak cukup untuk dikirim");
+                redirectAttributes.addFlashAttribute("page", "permintaan-pengiriman");
+                return new RedirectView("/permintaan-pengiriman/tambah");
+            }
+        }
+        
         permintaanPengiriman.setWaktuPermintaan(LocalDateTime.now());
         permintaanPengiriman.setNomorPengiriman(permintaanPengirimanService.generateNomorPengiriman(permintaanPengirimanDTO));
         

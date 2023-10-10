@@ -30,6 +30,9 @@ public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanServ
     @Autowired
     PermintaanPengirimanMapper permintaanPengirimanMapper;
 
+    @Autowired
+    BarangService barangService;
+
     @Override
     public List<PermintaanPengiriman> getAllPermintaanPengiriman() { return permintaanPengirimanDb.findAllByOrderByWaktuPermintaanDesc(); }
 
@@ -96,7 +99,7 @@ public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanServ
 
     @Override
     public void cancelPermintaan(PermintaanPengiriman permintaanPengiriman) {
-        if (!LocalDateTime.now().isAfter(permintaanPengiriman.getWaktuPermintaan()) && !permintaanPengiriman.isCanceled()) {
+        if (!LocalDateTime.now().isAfter(permintaanPengiriman.getWaktuPermintaan().plusHours(24)) && !permintaanPengiriman.isCanceled()) {
             permintaanPengiriman.setCanceled(true);
             savePermintaanPengiriman(permintaanPengiriman);
         } else {
@@ -120,5 +123,16 @@ public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanServ
         }
 
         return formattedPermintaanPengiriman;
+    }
+
+    @Override
+    public boolean isStokCukup(Barang barang, int kuantitasPengiriman) {
+        int stokBarang = barangService.getStockBarang(barang);
+
+        if (kuantitasPengiriman > stokBarang) {
+            return false;
+        }
+        
+        return true;
     }
 }

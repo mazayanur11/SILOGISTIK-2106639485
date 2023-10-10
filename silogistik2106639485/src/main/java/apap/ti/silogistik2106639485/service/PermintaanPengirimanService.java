@@ -22,4 +22,6 @@ public interface PermintaanPengirimanService {
     void cancelPermintaan(PermintaanPengiriman permintaanPengiriman);
     
     List<ReadPermintaanPengirimanResponseDTO> filterWaktuPenerimaan(LocalDateTime start, LocalDateTime end, Barang barang);
+
+    boolean isStokCukup(Barang barang, int kuantitasPengiriman);
 }
