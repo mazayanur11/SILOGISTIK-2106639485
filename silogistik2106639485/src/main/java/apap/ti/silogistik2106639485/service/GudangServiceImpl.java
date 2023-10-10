@@ -1,5 +1,6 @@
 package apap.ti.silogistik2106639485.service;
 
+import apap.ti.silogistik2106639485.repository.GudangBarangDb;
 import apap.ti.silogistik2106639485.repository.GudangDb;
 import apap.ti.silogistik2106639485.model.Gudang;
 import apap.ti.silogistik2106639485.model.GudangBarang;
@@ -12,6 +13,9 @@ import java.util.List;
 public class GudangServiceImpl implements GudangService {
     @Autowired
     GudangDb gudangDb;
+
+    @Autowired
+    GudangBarangDb gudangBarangDb;
 
     @Autowired
     GudangBarangService gudangBarangService;
