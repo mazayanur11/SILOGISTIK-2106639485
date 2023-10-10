@@ -1,18 +1,5 @@
 package apap.ti.silogistik2106639485;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.Locale;
-import java.util.concurrent.ThreadLocalRandom;
-
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import com.github.javafaker.Faker;
-
 import apap.ti.silogistik2106639485.dto.BarangMapper;
 import apap.ti.silogistik2106639485.dto.GudangBarangMapper;
 import apap.ti.silogistik2106639485.dto.GudangMapper;
@@ -31,11 +18,22 @@ import apap.ti.silogistik2106639485.service.GudangService;
 import apap.ti.silogistik2106639485.service.KaryawanService;
 import apap.ti.silogistik2106639485.service.PermintaanPengirimanBarangService;
 import apap.ti.silogistik2106639485.service.PermintaanPengirimanService;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import jakarta.transaction.Transactional;
+import com.github.javafaker.Faker;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootApplication
 public class Silogistik2106639485Application {
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Silogistik2106639485Application.class, args);
 	}

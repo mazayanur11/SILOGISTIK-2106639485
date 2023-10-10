@@ -1,9 +1,9 @@
 package apap.ti.silogistik2106639485.service;
 
-import java.util.List;
-
 import apap.ti.silogistik2106639485.model.Barang;
 import apap.ti.silogistik2106639485.model.GudangBarang;
+
+import java.util.List;
 
 public interface GudangBarangService {
     void saveGudangBarang(GudangBarang gudangBarang);

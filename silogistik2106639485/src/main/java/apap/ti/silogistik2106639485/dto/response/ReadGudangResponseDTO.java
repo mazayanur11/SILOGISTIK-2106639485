@@ -1,11 +1,11 @@
 package apap.ti.silogistik2106639485.dto.response;
 
-import java.util.List;
-
 import apap.ti.silogistik2106639485.model.GudangBarang;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

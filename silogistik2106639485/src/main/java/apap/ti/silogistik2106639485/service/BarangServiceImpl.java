@@ -3,7 +3,6 @@ package apap.ti.silogistik2106639485.service;
 import apap.ti.silogistik2106639485.repository.BarangDb;
 import apap.ti.silogistik2106639485.model.Barang;
 import apap.ti.silogistik2106639485.model.GudangBarang;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +65,6 @@ public class BarangServiceImpl implements BarangService {
     @Override
     public Dictionary<Barang, Integer> getStokBarang(List<Barang> listBarang) {
         Dictionary<Barang, Integer> stokBarang = new Hashtable<>();
-
         
         for (Barang barang : listBarang) {
             List<GudangBarang> listGudangBarang = gudangBarangService.getStokOfBarang(barang);

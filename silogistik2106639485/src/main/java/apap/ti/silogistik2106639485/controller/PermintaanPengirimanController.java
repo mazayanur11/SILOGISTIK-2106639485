@@ -1,21 +1,18 @@
 package apap.ti.silogistik2106639485.controller;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-
+import apap.ti.silogistik2106639485.dto.PermintaanPengirimanMapper;
+import apap.ti.silogistik2106639485.dto.request.CreatePermintaanPengirimanRequestDTO;
+import apap.ti.silogistik2106639485.dto.response.ReadPermintaanPengirimanResponseDTO;
+import apap.ti.silogistik2106639485.model.Barang;
+import apap.ti.silogistik2106639485.model.PermintaanPengiriman;
+import apap.ti.silogistik2106639485.model.PermintaanPengirimanBarang;
+import apap.ti.silogistik2106639485.service.BarangService;
+import apap.ti.silogistik2106639485.service.KaryawanService;
+import apap.ti.silogistik2106639485.service.PermintaanPengirimanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -27,20 +24,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import apap.ti.silogistik2106639485.dto.PermintaanPengirimanMapper;
-import apap.ti.silogistik2106639485.dto.request.CreatePermintaanPengirimanRequestDTO;
-import apap.ti.silogistik2106639485.dto.request.UpdateGudangRequestDTO;
-import apap.ti.silogistik2106639485.dto.response.ReadPermintaanPengirimanResponseDTO;
-import apap.ti.silogistik2106639485.model.Barang;
-import apap.ti.silogistik2106639485.model.GudangBarang;
-import apap.ti.silogistik2106639485.model.Karyawan;
-import apap.ti.silogistik2106639485.model.PermintaanPengiriman;
-import apap.ti.silogistik2106639485.model.PermintaanPengirimanBarang;
-import apap.ti.silogistik2106639485.service.BarangService;
-import apap.ti.silogistik2106639485.service.KaryawanService;
-import apap.ti.silogistik2106639485.service.PermintaanPengirimanService;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.List;
 
 @Controller
 public class PermintaanPengirimanController {
@@ -130,11 +121,12 @@ public class PermintaanPengirimanController {
             model.addAttribute("listKaryawan", karyawanService.getAllKaryawan());
             model.addAttribute("listBarang", barangService.getAllBarang());
             redirectAttributes.addFlashAttribute("page", "permintaan-pengiriman");
-        } catch (ConstraintViolationException e) {
+        } catch (TransactionSystemException e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Kuantitas Pengiriman harus positif");
             redirectAttributes.addFlashAttribute("page", "permintaan-pengiriman");
             return new RedirectView("/permintaan-pengiriman/tambah");
         }
+        
         return new RedirectView("/permintaan-pengiriman");
     }
     
@@ -173,8 +165,8 @@ public class PermintaanPengirimanController {
 
     @GetMapping("filter-permintaan-pengiriman")
     public String filterPermintaanPengiriman(
-        @RequestParam(name = "start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String start, 
-        @RequestParam(name = "end", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String end, 
+        @RequestParam(name = "start-date", required = false) String start, 
+        @RequestParam(name = "end-date", required = false) String end, 
         @RequestParam(name = "sku", required = false) String sku, Model model
     ) {
         if (start != null && end != null && sku != null) {

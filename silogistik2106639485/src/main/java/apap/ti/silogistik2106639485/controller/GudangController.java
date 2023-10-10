@@ -12,7 +12,6 @@ import apap.ti.silogistik2106639485.dto.response.ReadGudangResponseDTO;
 import apap.ti.silogistik2106639485.model.Barang;
 import apap.ti.silogistik2106639485.model.Gudang;
 import apap.ti.silogistik2106639485.model.GudangBarang;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -70,7 +69,6 @@ public class GudangController {
         //Mendapatkan semua gudang
         List<Gudang> listGudang = gudangService.getAllGudang();
 
-        //Add variabel semua bukuModel ke "ListBuku" untuk dirender pada thymeleaf
         model.addAttribute("listGudang", listGudang);
         model.addAttribute("page", "gudang");
         return "viewall-gudang";
@@ -78,7 +76,6 @@ public class GudangController {
 
     @GetMapping(value = "/gudang/{idGudang}")
     public String detailGudang(@PathVariable(value = "idGudang") Long id, Model model) {
-        // Mendapatkan buku melalui kodeBuku
         Gudang gudang = gudangService.getGudangById(id);
         ReadGudangResponseDTO gudangDTO = gudangMapper.gudangToReadGudangResponseDTO(gudang);
 
@@ -107,7 +104,6 @@ public class GudangController {
     public String formRestockBarang(@PathVariable(value = "idGudang") Long id, Model model) {
         Gudang gudang = gudangService.getGudangById(id);
         var gudangDTO = gudangMapper.gudangToUpdateGudangRequestDTO(gudang);
-
         var listBarang = barangService.getAllBarangSortedByMerk();
 
         model.addAttribute("gudangDTO", gudangDTO);
@@ -146,7 +142,6 @@ public class GudangController {
             redirectAttributes.addFlashAttribute("error", "Kuantitas pengiriman harus positif");
             return new RedirectView("/permintaan-pengiriman/tambah");
         }
-
     }
 
     @PostMapping(value = "gudang/{id}/restock-barang", params = {"addRow"})

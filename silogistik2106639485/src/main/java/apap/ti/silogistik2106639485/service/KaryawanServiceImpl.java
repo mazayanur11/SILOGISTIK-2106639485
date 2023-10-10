@@ -16,6 +16,7 @@ public class KaryawanServiceImpl implements KaryawanService {
     public void saveKaryawan(Karyawan karyawan) {
         karyawanDb.save(karyawan);
     }
+
     @Override
     public List<Karyawan> getAllKaryawan() { return karyawanDb.findAll(); }
 }

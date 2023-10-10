@@ -10,10 +10,16 @@ import java.util.List;
 
 public interface PermintaanPengirimanService {
     List<PermintaanPengiriman> getAllPermintaanPengiriman();
+
     String generateNomorPengiriman(CreatePermintaanPengirimanRequestDTO createPermintaanPengirimanRequestDTO);
+    
     void savePermintaanPengiriman(PermintaanPengiriman permintaanPengiriman);
+    
     PermintaanPengiriman getPermintaanPengirimanById(Long id);
+    
     String getStringJenisLayanan(int jenisLayanan);
+    
     void cancelPermintaan(PermintaanPengiriman permintaanPengiriman);
+    
     List<ReadPermintaanPengirimanResponseDTO> filterWaktuPenerimaan(LocalDateTime start, LocalDateTime end, Barang barang);
 }

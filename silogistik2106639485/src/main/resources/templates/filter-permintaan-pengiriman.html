@@ -7,7 +7,6 @@
   <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
   <object th:include="~{fragments/common :: datatable}" th:remove="tag"></object>
   <title>View All Permintaan Pengiriman</title>
-
 </head>
 
 <body>
@@ -17,7 +16,7 @@
       $("#booksTable").DataTable({
         dom: "Qlfrtip",
         // Memunculkan item dengan opsi 5, 10, 20
-        lengthMenu: [5, 10, 20]
+        lengthMenu: [5, 10, 20],
       });
     });
   </script>
@@ -28,26 +27,26 @@
       <br><br>
     </div>
     <div class="container mb-4">
-        <form class="align-items-center" th:action="@{/filter-permintaan-pengiriman}" method="get">
-            <select class="form-control" name="sku" id="sku">
-                <option th:each="barang: ${listBarang}" th:value="${barang.sku}" th:text="${barang.merk}"></option>
-            </select>
-            <br>
-            <div class="row">
-                <div class="col-6">
-                    <input name="start" required class="form-control" type="date" th:value="*{start}"/>
-                </div>
-                <div class="col-1">
-                    hingga
-                </div>
-                <div class="col-5">
-                    <input name="end" required class="form-control" type="date" th:value="*{end}"/>
-                </div>
-            </div>
-            <br>
-            <button type="submit" style="float:right; column-span: all;" class="btn btn-primary" th:href="@{/filter-permintaan-pengiriman}">Cari</button>
-        </form>
-        <br><br><br>
+      <form class="align-items-center" th:action="@{/filter-permintaan-pengiriman}" method="get">
+        <select class="form-control" name="sku" id="sku">
+          <option th:each="barang: ${listBarang}" th:value="${barang.sku}" th:text="${barang.merk}"></option>
+        </select>
+        <br>
+        <div class="row">
+          <div class="col-6">
+            <input name="start-date" required class="form-control" type="date" th:value="*{start}"/>
+          </div>
+          <div class="col-1">
+            hingga
+          </div>
+          <div class="col-5">
+            <input name="end-date" required class="form-control" type="date" th:value="*{end}"/>
+          </div>
+        </div>
+        <br>
+        <button type="submit" style="float:right; column-span: all;" class="btn btn-primary" th:href="@{/filter-permintaan-pengiriman}">Cari</button>
+      </form>
+      <br><br><br>
       <table id="booksTable" class="display">
         <thead>
           <tr>

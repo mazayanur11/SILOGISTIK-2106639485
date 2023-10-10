@@ -1,7 +1,13 @@
 package apap.ti.silogistik2106639485.controller;
 
-import java.util.List;
-
+import apap.ti.silogistik2106639485.dto.BarangMapper;
+import apap.ti.silogistik2106639485.dto.request.CreateBarangRequestDTO;
+import apap.ti.silogistik2106639485.dto.request.UpdateBarangRequestDTO;
+import apap.ti.silogistik2106639485.dto.response.ReadBarangResponseDTO;
+import apap.ti.silogistik2106639485.model.Barang;
+import apap.ti.silogistik2106639485.model.GudangBarang;
+import apap.ti.silogistik2106639485.service.BarangService;
+import apap.ti.silogistik2106639485.service.GudangBarangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,15 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import apap.ti.silogistik2106639485.dto.BarangMapper;
-import apap.ti.silogistik2106639485.dto.request.CreateBarangRequestDTO;
-import apap.ti.silogistik2106639485.dto.request.UpdateBarangRequestDTO;
-import apap.ti.silogistik2106639485.dto.response.ReadBarangResponseDTO;
-import apap.ti.silogistik2106639485.model.Barang;
-import apap.ti.silogistik2106639485.model.GudangBarang;
-import apap.ti.silogistik2106639485.service.BarangService;
-import apap.ti.silogistik2106639485.service.GudangBarangService;
 import jakarta.validation.Valid;
+import java.util.List;
 
 @Controller
 public class BarangController {
@@ -40,7 +39,6 @@ public class BarangController {
         //Mendapatkan semua gudang
         List<Barang> listBarang = barangService.getAllBarang();
 
-        //Add variabel semua bukuModel ke "ListBuku" untuk dirender pada thymeleaf
         model.addAttribute("listBarang", listBarang);
         model.addAttribute("stokBarang", barangService.getStokBarang(listBarang));
         model.addAttribute("page", "barang");
