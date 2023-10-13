@@ -116,7 +116,7 @@
                     <td><a th:href="@{/barang/{id}(id=${permintaanPengirimanBarang.Barang.sku})}" th:text="${permintaanPengirimanBarang.Barang.sku}"></a></td>
                     <td th:text="${permintaanPengirimanBarang.Barang.merk}"></td>
                     <td th:text="${permintaanPengirimanBarang.kuantitasPengiriman}"></td>
-                    <td th:text="${permintaanPengirimanBarang.kuantitasPengiriman * permintaanPengirimanBarang.Barang.hargaBarang}"></td>
+                    <td th:text="'Rp' + ${permintaanPengirimanBarang.kuantitasPengiriman * permintaanPengirimanBarang.Barang.hargaBarang}"></td>
                   </tr>
                 </tbody>
               </table>
