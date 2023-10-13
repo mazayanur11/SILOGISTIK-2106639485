@@ -64,7 +64,7 @@
                         </select>
                       </td>
                       <td>
-                        <input class="form-control" type="number" th:value="${gudangBarang.stok}" th:field="*{listGudangBarang[__${iterationStatus.index}__].stok}"/>
+                        <input class="form-control" type="number" required th:value="${gudangBarang.stok}" th:field="*{listGudangBarang[__${iterationStatus.index}__].stok}"/>
                         <input type="hidden" th:field="*{listGudangBarang[__${iterationStatus.index}__].id}"/>
                         <input type="hidden" th:field="*{listGudangBarang[__${iterationStatus.index}__].gudang}"/>
                       </td>
