@@ -29,4 +29,6 @@ public interface BarangService {
     String getStringTipeBarang(int tipeBarang);
 
     int getStockBarang(Barang barang);
+
+    List<Barang> getBarangByKategori(Integer tipeBarang);
 }

@@ -100,6 +100,21 @@ public class GudangController {
         return "cari-barang";
     }
 
+    @GetMapping(value = "/gudang/cari-barang-kategori")
+    public String formCariBarangKategori(@RequestParam(name = "tipeBarang", required = false) Integer tipeBarang, Model model) {
+        if (tipeBarang != null) {
+            List<Barang> listBarang = barangService.getBarangByKategori(tipeBarang);
+            
+            model.addAttribute("listBarangWithStok", barangService.getStokBarang(listBarang));
+        }
+        
+        List<Barang> listBarang = barangService.getAllBarangSortedByMerk();
+
+        model.addAttribute("listBarang", listBarang);
+        model.addAttribute("page", "barang");
+        return "cari-barang-kategori";
+    }
+
     @GetMapping(value = "/gudang/{idGudang}/restock-barang")
     public String formRestockBarang(@PathVariable(value = "idGudang") Long id, Model model) {
         Gudang gudang = gudangService.getGudangById(id);

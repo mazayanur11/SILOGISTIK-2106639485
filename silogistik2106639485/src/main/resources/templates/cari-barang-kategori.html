@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: datatable}" th:remove="tag"></object>
+  <title>Cari Barang</title>
+</head>
+
+<body>
+  <script>
+    $(document).ready(function () {
+      $("#booksTable").DataTable({
+        dom: "Qlfrtip",
+        // Memunculkan item dengan opsi 5, 10, 20
+        lengthMenu: [5, 10, 20],
+      });
+    });
+  </script>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="text-center pt-5">
+      <h2>Cari Barang</h2>    
+    </div>
+    <div class="container mb-4">
+      <form class="d-flex m-5 gap-3" th:action="@{/gudang/cari-barang-kategori}" method="get">
+        <select class="form-control" name="tipeBarang" id="tipeBarang">
+          <option th:value="1">Produk Elektronik</option>
+          <option th:value="2">Pakaian & Aksesoris</option>
+          <option th:value="3">Makanan & Minuman</option>
+          <option th:value="4">Kosmetik</option>
+          <option th:value="5">Perlengkapan Rumah</option>
+        </select>
+        <button class="btn btn-md btn-primary" type="submit">Cari</button>
+      </form>  
+      <!-- Membuat tampilan tabel buku dengan pagination -->
+      <table id="booksTable" class="display">
+        <thead>
+            <tr>
+              <th>#</th>
+              <th>SKU</th>
+              <th>Merk</th>
+              <th>Total Stok</th>
+              <th>Harga</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${listBarangWithStok} != null" th:each="barang, iterationStatus : ${listBarangWithStok}">
+              <td th:text="${iterationStatus.index + 1}"></td>
+              <td th:text="${barang.key.sku}"></td>
+              <td th:text="${barang.key.merk}"></td>
+              <td th:text="${barang.value}"></td>
+              <td th:text="'Rp' + ${barang.key.hargaBarang}"></td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

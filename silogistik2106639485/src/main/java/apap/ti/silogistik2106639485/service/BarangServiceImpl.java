@@ -6,6 +6,7 @@ import apap.ti.silogistik2106639485.model.GudangBarang;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
@@ -129,5 +130,18 @@ public class BarangServiceImpl implements BarangService {
         }
         
         return totalStok;
+    }
+
+    @Override
+    public List<Barang> getBarangByKategori(Integer tipeBarang) {
+        List<Barang> listBarang = new ArrayList<>();
+
+        for(Barang barang : getAllBarang()) {
+            if(barang.getTipeBarang() == tipeBarang) {
+                listBarang.add(barang);
+            }
+        }
+        
+        return listBarang;
     }
 }
